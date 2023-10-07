@@ -1,33 +1,35 @@
-import netCDF4 as nc
+import requests
 import matplotlib.pyplot as plt
 
-# Open the netCDF file in read mode
-file_path = '/home/panesico/Desktop/file.nc'
-dataset = nc.Dataset(file_path, 'r')
+url = "https://services.swpc.noaa.gov/json/rtsw/rtsw_mag_1m.json?Source='DSCOVR'&bt"
+response = requests.get(url)
 
-# Access the variables and dimensions in the netCDF file
-variables = dataset.variables
-dimensions = dataset.dimensions
+if response.status_code == 200:
+    data = response.json()
+else:
+    print("No se pudo obtener el JSON.")
+    exit()
 
-variable_name = 'vc0Frames'
-variable_data = variables[variable_name][:]  # This will give you the data as a NumPy array
-print(variable_data)
-# Print the names of all variables in the netCDF file
-print(dataset.variables.keys())
-print(dimensions)
-x = list(range(0, len(variable_data[1]), 1))
-y = list(range(1, 100, 1))
-i = 0
-array = []
-while i < 1000:
-    array.extend(variable_data[i])
-    i += 1
-plt.plot(array, label='Array 1', color='blue')
-plt.xlabel('X Axis Label')
-plt.ylabel('Y Axis Label')
-plt.title('Line Plot Example')
+# Asumiendo que los datos tienen una estructura diferente
+# Asegúrate de comprender la estructura real de los datos JSON
+time_tags = [entry["time_tag"] for entry in data]
+bt_values = [entry.get("bt") for entry in data]
+
+cantidad_de_datos_bt = len(bt_values)
+print(f"Cantidad de datos de 'bt': {cantidad_de_datos_bt}")
+print(max(bt_values))
+print(min(bt_values))
+
+plt.figure(figsize=(12, 6))
+plt.plot(time_tags, bt_values, label="bt")
+plt.xlabel("Time Tag")
+plt.ylabel("Valor de bt")
+plt.title("Gráfico de la variable bt")
+plt.grid(True)
 plt.legend()
-    # Display the plot
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+
+
 plt.show()
-# Close the netCDF file after you're done
-dataset.close()
