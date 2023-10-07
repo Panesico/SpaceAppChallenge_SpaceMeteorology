@@ -1,0 +1,71 @@
+import requests
+import matplotlib.pyplot as plt
+from datetime import datetime
+
+url = "https://services.swpc.noaa.gov/json/rtsw/rtsw_mag_1m.json?Source='DSCOVR'&bt"
+response = requests.get(url)
+
+if response.status_code == 200:
+    data = response.json()
+else:
+    print("No se pudo obtener el JSON.")
+    exit()
+
+# Asumiendo que los datos tienen una estructura diferente
+# Asegúrate de comprender la estructura real de los datos JSON
+time_tags = [entry["time_tag"] for entry in data]
+bt_values = [entry.get("bt") for entry in data]
+source_values = [entry.get("source") for entry in data]
+print(time_tags)
+
+# Inicializar variables para los primeros datos de ACE y DSCOVR
+fd_ACE = None
+fd_DSCOVR = None
+
+# Recorrer los datos para encontrar el primer dato de ACE y DSCOVR
+for entry in data:
+    source = entry.get("source")
+    if source == "ACE" and fd_ACE is None:
+        fd_ACE = entry
+    elif source == "DSCOVR" and fd_DSCOVR is None:
+        fd_DSCOVR = entry
+
+# Imprimir los primeros datos y sus marcas de tiempo correspondientes
+if fd_ACE:
+    print("Primer dato de ACE:")
+    firstAce = (f"Time_tag: {fd_ACE['time_tag']}")
+    print(firstAce)
+    print(f"bt: {fd_ACE['bt']}")
+
+if fd_DSCOVR:
+    print("Primer dato de DSCOVR:")
+    firstDSCOVR = (f"Time_tag: {fd_DSCOVR['time_tag']}")
+    print(firstDSCOVR)
+    print(f"bt: {fd_DSCOVR['bt']}")
+
+comparedate_ACE = firstAce.split(": ")[1]
+comparedat_DSCOVR = firstDSCOVR.split(": ")[1]
+format_ACE = datetime.strptime(comparedate_ACE, "%Y-%m-%dT%H:%M:%S")
+format_DSCOVR = datetime.strptime(comparedat_DSCOVR, "%Y-%m-%dT%H:%M:%S")
+
+if format_ACE < format_DSCOVR:
+    print("firstAce sucede primero.")
+    plt.figure(figsize=(12, 6))
+
+    # Colores para las fuentes 'ACE' y 'DSCOVR'
+    colores = ['blue' if source == 'DSCOVR' else 'red' for source in source_values]
+
+    # Graficar los datos con colores basados en la fuente a partir del primer dato de ACE
+    index_first_ACE = time_tags.index(fd_ACE['time_tag'])
+    plt.scatter(time_tags[index_first_ACE:], bt_values[index_first_ACE:], c=colores[index_first_ACE:])
+
+    plt.xlabel("T (min)")
+    plt.ylabel("Valor de B (T)")
+    plt.title("Gráfico Con corrección de tiempo B (T)")
+    plt.tight_layout()
+
+    plt.show()
+elif format_ACE > format_DSCOVR:
+    print("firstDSCOVR sucede primero.")
+else:
+    print("Ambas fechas son iguales.")
