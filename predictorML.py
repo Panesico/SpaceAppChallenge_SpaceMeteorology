@@ -4,7 +4,10 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
-array = np.zeros((11, 1, 1440, 1))
+array = pd.DataFrame({
+    'integers': [],
+    'isFlare': []
+})
 
 # Print the names of all variables in the netCDF file
 i = 1
@@ -13,27 +16,46 @@ while i < 10:
     dataset = nc.Dataset(file_path, 'r')
     variables = dataset.variables
     variable_data = variables['bz_gsm'][:]
-    array[i - 1][0] = variable_data
+    for j in variable_data:
+        array['integers'].append(j)
+        if j > 8:
+            array['isFlare'].append(j)
+        else:
+            array['isFlare'].append(0)
     i += 1
 file_path = '/home/panesico/Desktop/data/10pub.nc'
 dataset = nc.Dataset(file_path, 'r')
 variables = dataset.variables
 variable_data = variables['bz_gsm'][:]
-array[10][0] = variable_data
+for j in variable_data:
+    array['integers'].append(j)
+    if j > 8:
+        array['isFlare'].append(j)
+    else:
+        array['isFlare'].append(0)
 i = 1
 while i < 10:
     file_path = '/home/panesico/Desktop/data2/0' + str(i) + 'pub.nc'
     dataset = nc.Dataset(file_path, 'r')
     variables = dataset.variables
     variable_data = variables['bz_gsm'][:]
-    array[i - 1][0] = variable_data
+    for j in variable_data:
+        array['integers'].append(j)
+        if j > 8:
+            array['isFlare'].append(j)
+        else:
+            array['isFlare'].append(0)
     i += 1
 file_path = '/home/panesico/Desktop/data2/10pub.nc'
 dataset = nc.Dataset(file_path, 'r')
 variables = dataset.variables
 variable_data = variables['bz_gsm'][:]
-array[10][0] = variable_data
-array[10] = 1
+for j in variable_data:
+    array['integers'].append(j)
+    if j > 8:
+        array['isFlare'].append(j)
+    else:
+        array['isFlare'].append(0)
 #plt.plot(array, label='bz_gsm(T)', color='red')
 #plt.xlabel('X Axis Label')
 #plt.ylabel('Y Axis Label')
@@ -42,4 +64,8 @@ array[10] = 1
 
 #plt.show()
 
-print(array.corr()[1])
+
+# Assuming you've flattened your 3D array to a list of lists
+
+df = pd.DataFrame(array)
+df.to_csv('output.csv', index=False)
