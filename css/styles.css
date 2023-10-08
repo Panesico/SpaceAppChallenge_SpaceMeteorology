@@ -113,16 +113,28 @@ footer {
 	padding-top: 18px;
 	padding-bottom: 15px;
 }
+
 .go-back {
-	padding-bottom:25px;
+    padding-bottom: 25px;
 }
-.go-back a{
-	text-decoration: none;
-	color:rgb(238,97,18);
-	font-size:14px;
-	padding: 20px;
-	font-weight: bold;
+
+.go-back a {
+    text-decoration: none;
+    color: rgb(238,97,18);
+    font-size: 12px;  /* Reducir el tamaño de fuente para un botón más pequeño */
+    padding: 10px;  /* Reducir el padding para un botón más pequeño */
+    font-weight: bold;
+    border: 2px solid rgb(238,97,18); 
+    transition: background-color 0.3s, color 0.3s;
+    margin: 5px;  /* Añadir un margen alrededor del botón */
 }
+
+.go-back a:hover {
+    background-color: rgb(238,97,18);
+    color: white;
+}
+
+
 .inside {
 	padding-top: 30px;
 	font-size: 20px;
