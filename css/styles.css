@@ -152,4 +152,32 @@ nav.kid li:hover {
 	padding-top: 30px;
 	font-size: 16px;
 }
-
+.keywords {
+	padding-top: 20px;
+	font-weight: bold;
+	color:rgb(72, 29, 147);
+}
+.end-kids .text-p{
+	margin: 50px 150px;
+}
+.graphic {
+	width: 600px;
+	height: auto;
+}
+.link {
+	margin: 50px 300px;
+	margin-left: 300px;
+	margin-right: 300px;
+}
+.link a{
+	text-decoration: none;
+	color: rgb(0,0,54);
+	font-size:20px;
+	padding: 20px;
+	font-weight: bold;
+}
+.link li{
+	display: inline-block;
+	width: 33%;
+	padding: 10px 30px;
+}
