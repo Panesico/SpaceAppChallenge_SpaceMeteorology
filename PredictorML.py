@@ -23,7 +23,7 @@ predictions = reg.predict(test[predictors])
 
 counter = list(range(0, len(predictions), 1))
 
-plt.plot(predictions)
+plt.plot(predictions, label='Prediction')
 
 my_array = []
 
@@ -35,7 +35,6 @@ for i in range(6, 10):
     dimensions = dataset.dimensions
     variable_name = 'bz_gsm'
     variable_data = variables[variable_name][:]  # This will give you the data as a NumPy array
-    variable_data = np.ma.filled(variable_data, 0)
     my_array.extend(variable_data)
 
 file_path = './data3/10pub.nc'
@@ -47,7 +46,8 @@ variable_name = 'bz_gsm'
 variable_data = variables[variable_name][:]  # This will give you the data as a NumPy array
 my_array.extend(variable_data)
 
-plt.plot(my_array)
-plt.show()
-
-print(predictions)
+plt.plot(my_array, label='Real flare')
+plt.xlabel('Time(min)')
+plt.ylabel('bz_gsm(T)')
+plt.legend()
+plt.savefig('test.png')

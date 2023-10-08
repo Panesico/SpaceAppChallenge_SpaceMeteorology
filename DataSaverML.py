@@ -32,6 +32,8 @@ for directory in directories:
     file_path = directory + '10pub.nc'
     process_file(file_path, df)
     plt.plot(my_array)
+    plt.xlabel('Time(min)')
+    plt.ylabel('bz_gsm(T)')
     plt.savefig(('graph' + str(j) + '.png'))
     plt.clf()
     j += 1

@@ -25,6 +25,8 @@ for i in range(6, 10):
 
 file_path = './data3/' + '10pub.nc'
 plt.plot(my_array)
+plt.xlabel('Time(min)')
+plt.ylabel('bz_gsm(T)')
 plt.savefig('test.png')
 process_file(file_path, df)
 # Save DataFrame to CSV
