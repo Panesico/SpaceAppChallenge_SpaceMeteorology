@@ -3,6 +3,7 @@ import netCDF4 as nc
 import seaborn as sns
 from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
+import numpy as np
 
 array = pd.read_csv("output.csv")
 
@@ -27,16 +28,17 @@ plt.plot(predictions)
 my_array = []
 
 for i in range(6, 10):
-    file_path = '/home/panesico/Desktop/data3/' + '0' + str(i) + 'pub.nc'
+    file_path = './data3/' + '0' + str(i) + 'pub.nc'
     dataset = nc.Dataset(file_path, 'r')
     # Access the variables and dimensions in the netCDF file
     variables = dataset.variables
     dimensions = dataset.dimensions
     variable_name = 'bz_gsm'
     variable_data = variables[variable_name][:]  # This will give you the data as a NumPy array
+    variable_data = np.ma.filled(variable_data, 0)
     my_array.extend(variable_data)
 
-file_path = '/home/panesico/Desktop/data3/10pub.nc'
+file_path = './data3/10pub.nc'
 dataset = nc.Dataset(file_path, 'r')
 # Access the variables and dimensions in the netCDF file
 variables = dataset.variables
