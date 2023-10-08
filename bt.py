@@ -1,4 +1,5 @@
 import arrr
+import numberwang
 from pyscript import document
 import requests
 import matplotlib.pyplot as plt
